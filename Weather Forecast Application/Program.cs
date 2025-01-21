@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using Microsoft.VisualBasic.FileIO;
 using System.Runtime.CompilerServices;
 using System.Numerics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Diagnostics.Metrics;
 
 public class WeatherData
 {
@@ -148,6 +150,27 @@ public class WeatherApp
 
     private void ViewForecast()
     {
-        cw
+        Console.WriteLine("Enter Loation to Forecast");
+        string location = Console.ReadLine();
+        Console.WriteLine("Enter number of days for forecast: ");
+        if (!int.TryParse(Console.ReadLine(), out int days) || days < 0)
+        {
+            Console.WriteLine("Invalid number of days.");
+            return;
+        }
+        Random rand = new Random();
+        Console.WriteLine($"Weather Forecast for {location}");
+        for (int i = 0; i < days; i++)
+        {
+            var forecast = new WeatherData
+            {
+                Location = location,
+                Date = DateTime.Now.AddDays(i),
+                TemparatureC = rand.Next(-10, 35),
+                Condition = new[] { "Sunny", "Rainy", "Cloudy", "Stormy" }[rand.Next(4)]
+            };
+            forecast.Display();
+        };
     }
+}
 }
