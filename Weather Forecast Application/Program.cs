@@ -5,6 +5,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Microsoft.VisualBasic.FileIO;
 using System.Runtime.CompilerServices;
+using System.Numerics;
 
 public class WeatherData
 {
@@ -106,6 +107,46 @@ public class WeatherApp
     }
 
     private void ViewWeatherData()
+    {
+        Console.WriteLine("View Temparature in (1) Celsius or (2) Fahrenheit? ");
+        bool Showfarehit = Console.ReadLine() == "2";
+
+        if (!weatherData.Any())
+        {
+            Console.WriteLine("No Weather Data Found");
+            return;
+        }
+        Console.WriteLine("Weather Data");
+        {
+            foreach (var weather in weatherData)
+            {
+                weather.Display(Showfarehit);
+            }
+        }
+    }
+
+    private void FilterByLocation()
+    {
+        Console.WriteLine("Enter Location to filter");
+        string location = Console.ReadLine();
+
+        var filterData = weatherData.Where(w => w.Location.Equals(location, StringComparison.OrdinalIgnoreCase)).ToList();
+        if (!filterData.Any())
+        {
+            Console.WriteLine("No data found for the specified location.");
+            return;
+        }
+
+        Console.WriteLine("View Temparature in  (1) Celsius or (2) Fahrenheit? ");
+        bool Showfarehit = Console.ReadLine() == "2";
+        Console.WriteLine("Weather Data for {location}");
+        foreach (var weather in weatherData)
+        {
+            weather.Display(Showfarehit);
+        }
+    }
+
+    private void ViewForecast()
     {
     }
 }
